@@ -32,11 +32,6 @@ class PostService {
         return result.toResponse()
     }
 
-//    fun modifyList() : List<PostResponseDto>{
-//        val result = postRepository.findAll()
-//        return result.toResponce
-//    }
-
     //게시물 수정은 Get과 동일하게 업데이트 함
 
     //게시물 삭제

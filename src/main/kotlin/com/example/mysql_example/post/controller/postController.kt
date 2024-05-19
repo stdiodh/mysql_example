@@ -43,12 +43,12 @@ class postController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result)
     }
 
-    //게시물 수정 집에서 만들어볼 것
-//    @PutMapping("/{id}")
-//    private fun putPost (@PathVariable id : Long) : ResponseEntity<Any>{
-//        val result = postService.titlePost(postRequestDto)
-//        return ResponseEntity.status(HttpStatus.OK).body(result)
-//    }
+    //게시물 수정
+    @PutMapping("/{id}")
+    private fun putPost(@RequestBody postRequestDto: PostRequestDto) : ResponseEntity<PostResponseDto>{
+        val result = postService.titlePost(postRequestDto)
+        return ResponseEntity.status(HttpStatus.OK).body(result)
+    }
 
     //게시물 삭제
     @DeleteMapping("/{id}")
