@@ -43,7 +43,7 @@ class postController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result)
     }
 
-    //게시물 수정
+    //게시물 수정 아이디 추가
     @PutMapping("/{id}")
     private fun putPost(@RequestBody postRequestDto: PostRequestDto) : ResponseEntity<PostResponseDto>{
         val result = postService.titlePost(postRequestDto)
