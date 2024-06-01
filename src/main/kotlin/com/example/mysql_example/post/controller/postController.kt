@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/posts")
-class postController {
+class postController (
     @Autowired
-    private lateinit var postService : PostService
+    private var postService : PostService
+
+){
 
     //게시물 전체 조회
     @GetMapping
@@ -39,7 +41,7 @@ class postController {
 
     //사용자 ID에 해당하는 게시글 가져오는 Api
     @GetMapping("/user/{id}")
-    private fun getPostByuserId(@PathVariable id : Long) : ResponseEntity<BaseResponse<PostResponseDto>>{
+    private fun getPostByUserId(@PathVariable id : Long) : ResponseEntity<BaseResponse<PostResponseDto>>{
         val result = postService.getPostByUserId(id)
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse(data = result))
     }

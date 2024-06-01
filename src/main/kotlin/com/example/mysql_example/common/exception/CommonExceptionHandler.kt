@@ -2,6 +2,7 @@ package com.example.mysql_example.common.exception
 
 import com.example.mysql_example.common.dto.BaseResponse
 import com.example.mysql_example.common.enums.ResultStatus
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.FieldError
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.NoHandlerFoundException
 
+@Order(value = 2)
 @RestController
 class CommonExceptionHandler {
 
@@ -47,8 +49,4 @@ class CommonExceptionHandler {
             BaseResponse(status = ResultStatus.ERROR.name, resultMsg = ResultStatus.ERROR.msg)
         )
     }
-
-
-
-
 }

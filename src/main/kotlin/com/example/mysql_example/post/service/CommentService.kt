@@ -1,6 +1,6 @@
 package com.example.mysql_example.post.service
 
-import com.example.mysql_example.common.exception.PostException
+import com.example.mysql_example.common.exception.post.PostException
 import com.example.mysql_example.post.dto.CommentRequestDto
 import com.example.mysql_example.post.dto.CommentResponseDto
 import com.example.mysql_example.post.entity.Post

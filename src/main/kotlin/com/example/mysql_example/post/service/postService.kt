@@ -1,6 +1,6 @@
 package com.example.mysql_example.post.service
 
-import com.example.mysql_example.common.exception.PostException
+import com.example.mysql_example.common.exception.post.PostException
 import com.example.mysql_example.post.dto.PostRequestDto
 import com.example.mysql_example.post.dto.PostResponseDto
 import com.example.mysql_example.post.entity.Post
@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
-class PostService {
+class PostService (
     @Autowired
-    private lateinit var postRepository: PostRepository
+    private var postRepository : PostRepository
+    )
+{
 
     //리스트 전체 조회
     fun getPostList() : List<PostResponseDto>{
