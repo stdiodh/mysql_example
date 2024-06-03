@@ -16,7 +16,7 @@ class MemberService(
     fun signUp(memberRequestDto: MemberRequestDto) : String {
         val member : Member? = memberRepository.findByEmail(memberRequestDto.email)
         if (member != null){
-            throw InvalidEmailException(fieldname = "email", massage = "이미 가입한 이메일입니다!")
+            throw InvalidEmailException(fieldName = "email", massage = "이미 가입한 이메일입니다!")
         }
         memberRepository.save(memberRequestDto.toEntity())
         return "회원가입이 완료되었습니다."

@@ -17,8 +17,10 @@ class MemberController (
 ){
     //회원가입 api
     @PostMapping("/join")
-    fun signUp(@RequestBody memberRequestDto: MemberRequestDto) : ResponseEntity<BaseResponse<String>>{
+    private fun signUp(@RequestBody memberRequestDto: MemberRequestDto)
+    : ResponseEntity<BaseResponse<String>>{
         val result = memberService.signUp(memberRequestDto)
-        return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse(data = result))
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(BaseResponse(data = result))
     }
 }

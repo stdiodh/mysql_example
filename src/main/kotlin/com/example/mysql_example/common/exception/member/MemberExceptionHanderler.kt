@@ -15,7 +15,7 @@ class MemberExceptionHanderler {
     @ExceptionHandler(InvalidEmailException::class)
     protected fun invalidEmailExceptionHandler(exception: InvalidEmailException)
     : ResponseEntity<BaseResponse<Map<String, String>>>{
-        val error = mapOf(exception.fieldname to (exception.message?: "Not Exception Massage"))
+        val error = mapOf(exception.fieldName to (exception.message?: "Not Exception Massage"))
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
                 BaseResponse(
