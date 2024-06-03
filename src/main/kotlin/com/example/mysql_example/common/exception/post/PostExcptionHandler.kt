@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @Order(value = 1)
 @RestControllerAdvice
 class PostExceptionHandler {
+
     @ExceptionHandler(PostException::class)
-    protected fun noPostExeptionHandler(exception: PostException) :
+    protected fun noPostExceptionHandler(exception : PostException) :
             ResponseEntity<BaseResponse<Any>> {
-            return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                    BaseResponse(
-                    status = ResultStatus.ERROR.name, resultMsg = exception.msg))
-        }
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(
+                BaseResponse(
+                    status = ResultStatus.ERROR.name, resultMsg = exception.msg
+                )
+            )
+    }
 }
