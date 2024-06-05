@@ -3,6 +3,7 @@ package com.example.mysql_example.member.controller
 import com.example.mysql_example.common.dto.BaseResponse
 import com.example.mysql_example.member.dto.MemberRequestDto
 import com.example.mysql_example.member.service.MemberService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +18,7 @@ class MemberController (
 ){
     //회원가입 api
     @PostMapping("/join")
-    private fun signUp(@RequestBody memberRequestDto: MemberRequestDto)
+    private fun signUp(@Valid @RequestBody memberRequestDto: MemberRequestDto)
     : ResponseEntity<BaseResponse<String>>{
         val result = memberService.signUp(memberRequestDto)
         return ResponseEntity.status(HttpStatus.CREATED)
