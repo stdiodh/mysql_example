@@ -39,7 +39,7 @@ class postController (
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse(data = result))
     }
 
-    //사용자 ID에 해당하는 게시글 가져오는 Api
+                //사용자 ID에 해당하는 게시글 가져오는 Api
     @GetMapping("/user/{id}")
     private fun getPostByUserId(@PathVariable id : Long) : ResponseEntity<BaseResponse<PostResponseDto>>{
         val result = postService.getPostByUserId(id)

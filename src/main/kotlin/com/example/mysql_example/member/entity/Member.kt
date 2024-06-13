@@ -31,5 +31,8 @@ class Member (
     @Enumerated(EnumType.STRING)
     var gender : Gender,
 
-    )
+    ) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    val role : List<MemberRole>? = null
+}
 

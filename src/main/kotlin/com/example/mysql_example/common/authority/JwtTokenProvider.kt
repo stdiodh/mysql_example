@@ -15,25 +15,27 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
 
-const val EXPIRATION_MILLISECONDS = 1000 * 60 * 30L
+const val EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 30L
 
 
 @Component
 class JwtTokenProvider {
-    @Value("\$(jwt.secret)")
+    @Value("\${jwt.secret}")
     lateinit var secretKey : String
 
     private val key by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))}
 
-    //토큰 생성 (서비스 사용)
+    //토큰 생성 (서비스 사용, 로그인할 때 사용)
     fun createToken(authentication : Authentication) : Tokeninfo {
         // 권한 추출
         val authorities : String = authentication
             .authorities
             .joinToString(",", transform = GrantedAuthority::getAuthority)
 
+        //언제 생성되었는지
         val now = Date()
 
+        //토큰 유효시간 (현재시간 + 30분)
         val accessExpiration = Date(now.time + EXPIRATION_MILLISECONDS)
         val accessToken = Jwts
             .builder()
@@ -47,9 +49,9 @@ class JwtTokenProvider {
         return Tokeninfo(grantType = "Bearer", accessToken = accessToken)
     }
 
-    //토큰추출 (서비스 사용)
+    //토큰에서 권한 추출 (서비스 사용)
 
-    fun getAuthentication(token : String) : Authentication {
+    fun getAuthentication(token: String) : Authentication {
         val claims : Claims = getClaims(token)
 
         val auth = claims["auth"] ?: throw RuntimeException("유효하지 않은 토큰입니다!")
@@ -58,11 +60,9 @@ class JwtTokenProvider {
             .split(",")
             .map { SimpleGrantedAuthority(it) }
 
-        val principal : UserDetails = User(claims.subject, "", authorities)
+        val principal : UserDetails = User(Claims.SUBJECT, "", authorities)
         return UsernamePasswordAuthenticationToken(principal, "", authorities)
-
     }
-    //토큰 검증 (필터에서 사용)
 
     fun validateToken(token: String) : Boolean {
         try {
@@ -74,14 +74,13 @@ class JwtTokenProvider {
         return false
     }
 
-    //claims 추출
-    private fun getClaims (token : String) : Claims {
-        val claims : Claims = Jwts
+    //토큰 claims 추출
+    private fun getClaims (token : String) : Claims =
+        Jwts
             .parser()
             .verifyWith(key)
             .build()
             .parseSignedClaims(token)
             .payload
-        return claims
-    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.mysql_example.member.controller
 
 import com.example.mysql_example.common.dto.BaseResponse
+import com.example.mysql_example.common.dto.Tokeninfo
+import com.example.mysql_example.member.dto.LoginDto
 import com.example.mysql_example.member.dto.MemberRequestDto
 import com.example.mysql_example.member.service.MemberService
 import jakarta.validation.Valid
@@ -23,5 +25,14 @@ class MemberController (
         val result = memberService.signUp(memberRequestDto)
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(BaseResponse(data = result))
+    }
+
+    //로그인 api
+    @PostMapping("/login")
+    private fun login(@Valid @RequestBody loginDto: LoginDto)
+    : ResponseEntity<BaseResponse<Tokeninfo>> {
+        val tokenInfo = memberService.login(loginDto)
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(BaseResponse(data = tokenInfo))
     }
 }
