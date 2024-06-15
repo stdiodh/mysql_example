@@ -1,6 +1,7 @@
 package com.example.mysql_example.member.entity
 
 import com.example.mysql_example.common.enums.Gender
+import com.example.mysql_example.member.dto.MemberResponseDto
 import jakarta.persistence.*
 import java.time.LocalDate
 
@@ -34,5 +35,12 @@ class Member (
     ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val role : List<MemberRole>? = null
+
+    fun toResponse() : MemberResponseDto = MemberResponseDto(
+        name = name,
+        email = email,
+        birthDay = birthday,
+        gender = gender,
+    )
 }
 

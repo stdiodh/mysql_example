@@ -6,7 +6,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/example?autoReconnect=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://mysql-container:3306/post_db?autoReconnect=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: dh
     password: dh
 
