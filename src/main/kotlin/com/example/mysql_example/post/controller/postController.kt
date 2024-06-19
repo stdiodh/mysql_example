@@ -4,6 +4,8 @@ import com.example.mysql_example.common.dto.BaseResponse
 import com.example.mysql_example.post.dto.PostRequestDto
 import com.example.mysql_example.post.dto.PostResponseDto
 import com.example.mysql_example.post.service.PostService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -17,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@SecurityRequirement(name = "BearerAuth")
+@Tag(name = "게시판 Api 컨트롤러", description = "게시판 전체 조회, id 조회, 수정, 생성, 삭제 Api 명세서 입니다.")
+
 @RestController
 @RequestMapping("api/posts")
+
 class postController (
     @Autowired
     private var postService : PostService
