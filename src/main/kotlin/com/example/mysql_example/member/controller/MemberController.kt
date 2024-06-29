@@ -13,6 +13,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -51,5 +52,18 @@ class MemberController (
         val id = (SecurityContextHolder.getContext().authentication.principal as CustomUser).id
         val result = memberService.searchMyInfo(id)
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse(data = result))
+    }
+
+    //로그아웃 api
+    @SecurityRequirement(name = "BearerAuth")
+    @DeleteMapping("/logout")
+    private fun logout() : ResponseEntity<BaseResponse<String>>{
+        val id = (SecurityContextHolder.getContext().authentication.principal as CustomUser).id
+        val result = memberService.logout(id)
+        return ResponseEntity.status(HttpStatus.OK).body(
+            BaseResponse(
+                data = result
+            )
+        )
     }
 }

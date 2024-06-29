@@ -82,4 +82,10 @@ class MemberService(
             ?: throw RuntimeException("존재하지 않는 사용자입니다!")
         return member.toResponse()
     }
+
+    //로그아웃
+    fun logout(id : Long) : String {
+        refreshTokenRepository.deleteById(id)
+        return "로그아웃 되었습니다!"
+    }
 }
