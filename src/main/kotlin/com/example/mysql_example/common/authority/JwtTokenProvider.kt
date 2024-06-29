@@ -2,6 +2,7 @@ package com.example.mysql_example.common.authority
 
 import com.example.mysql_example.common.dto.CustomUser
 import com.example.mysql_example.common.dto.Tokeninfo
+import com.example.mysql_example.member.entity.RefreshToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -43,11 +44,13 @@ class JwtTokenProvider {
         //refresh 토큰 유효시간 (현재시간 + 1년)
         val refreshExpriation = Date (now.time + REFLESH_EXPIRATION_MILLISECONDS)
 
+        val memberId = (authentication.principal as CustomUser).id
+
         val accessToken = Jwts
             .builder()
             .subject(authentication.name)
             .claim("auth", authorities)
-            .claim("userId", (authentication.principal as CustomUser).id)
+            .claim("userId", memberId)
             .issuedAt(now)
             .expiration(accessExpiration)
             .signWith(key, Jwts.SIG.HS256)

@@ -1,6 +1,11 @@
 #spring.application.name=mysql_example
 
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   application:
     name: mysql_example
 
