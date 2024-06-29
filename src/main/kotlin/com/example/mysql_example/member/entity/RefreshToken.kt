@@ -9,8 +9,8 @@ class RefreshToken (
     //import 확인 잘하기
     @Id
     @Indexed
-    val refreshToken: String,
+    val memberId: Long,
 
     //누구의 토큰인지 알기 위함
-    val memberId : Long,
+    val refreshToken : String,
 )

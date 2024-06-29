@@ -6,6 +6,7 @@ import com.example.mysql_example.common.dto.Tokeninfo
 import com.example.mysql_example.member.dto.LoginDto
 import com.example.mysql_example.member.dto.MemberRequestDto
 import com.example.mysql_example.member.dto.MemberResponseDto
+import com.example.mysql_example.member.entity.RefreshToken
 import com.example.mysql_example.member.service.MemberService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 @Tag(name = "회원 Api 컨트롤러", description = "회원 가입, 로그인, 내 정보 조회 Api 명세서 입니다.")
@@ -65,5 +67,10 @@ class MemberController (
                 data = result
             )
         )
+    }
+
+    @PostMapping("/refresh")
+    private fun issueAccessToken(@RequestHeader refreshToken: String) {
+
     }
 }

@@ -61,18 +61,20 @@ class MemberService(
     fun login(loginDto: LoginDto): Tokeninfo {
         val authenticationToken = UsernamePasswordAuthenticationToken(loginDto.email, loginDto.password)
         val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
-        val result = jwtTokenProvider.createToken(authentication)
         val memberId = (authentication.principal as CustomUser).id
         var token = refreshTokenRepository.findByIdOrNull(memberId)
         if (token != null){
             throw RuntimeException("이미 로그인한 사용자입니다.")
         }
+        val accessToken = jwtTokenProvider.createAccessToken(authentication)
+        val refreshToken = jwtTokenProvider.createRefreshToken()
+
         token = RefreshToken(
-            refreshToken = result.refreshToken,
             memberId = memberId,
+            refreshToken = refreshToken
         )
         refreshTokenRepository.save(token)
-        return result
+        return Tokeninfo(grantType = "Bearer", accessToken = accessToken, refreshToken = refreshToken)
     }
 
     //내 정보 조회
@@ -87,5 +89,10 @@ class MemberService(
     fun logout(id : Long) : String {
         refreshTokenRepository.deleteById(id)
         return "로그아웃 되었습니다!"
+    }
+
+    // access token 갱신
+    fun issueAccessToken(refreshToken: String){
+
     }
 }

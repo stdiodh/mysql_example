@@ -44,9 +44,10 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     protected fun defaultExceptionHandler(exception: Exception) :
-            ResponseEntity<BaseResponse<Any>> {
+            ResponseEntity<BaseResponse<String>> {
+        val error = exception.message
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-            BaseResponse(status = ResultStatus.ERROR.name, resultMsg = ResultStatus.ERROR.msg)
+            BaseResponse(status = ResultStatus.ERROR.name, data = error ,resultMsg = ResultStatus.ERROR.msg)
         )
     }
 }
