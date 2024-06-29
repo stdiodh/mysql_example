@@ -18,6 +18,8 @@ import java.util.*
 
 const val EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 30L
 
+const val REFLESH_EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 60 * 24 * 365L
+
 
 @Component
 class JwtTokenProvider {
@@ -36,8 +38,11 @@ class JwtTokenProvider {
         //언제 생성되었는지
         val now = Date()
 
-        //토큰 유효시간 (현재시간 + 30분)
+        //access 토큰 유효시간 (현재시간 + 30분)
         val accessExpiration = Date(now.time + EXPIRATION_MILLISECONDS)
+        //refresh 토큰 유효시간 (현재시간 + 1년)
+        val refreshExpriation = Date (now.time + REFLESH_EXPIRATION_MILLISECONDS)
+
         val accessToken = Jwts
             .builder()
             .subject(authentication.name)
@@ -48,7 +53,14 @@ class JwtTokenProvider {
             .signWith(key, Jwts.SIG.HS256)
             .compact()
 
-        return Tokeninfo(grantType = "Bearer", accessToken = accessToken)
+        val refreshToken = Jwts
+            .builder()
+            .issuedAt(now)
+            .expiration(refreshExpriation)
+            .signWith(key, Jwts.SIG.HS256)
+            .compact()
+
+        return Tokeninfo(grantType = "Bearer", accessToken = accessToken, refreshToken = refreshToken)
     }
 
     //토큰에서 권한 추출 (서비스 사용)
