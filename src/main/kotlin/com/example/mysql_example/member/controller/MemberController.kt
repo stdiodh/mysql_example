@@ -69,7 +69,9 @@ class MemberController (
     }
 
     @PostMapping("/refresh")
-    private fun issueAccessToken(@RequestHeader refreshToken: String) {
-
+    private fun issueNewAccessToken(@RequestHeader(value = "refreshToken") refreshToken: String)
+    : ResponseEntity<BaseResponse<String>>{
+        val result = memberService.issueNewAccessToken(refreshToken)
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse(data = result))
     }
 }

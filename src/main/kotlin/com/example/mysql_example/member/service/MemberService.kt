@@ -100,8 +100,18 @@ class MemberService(
     }
 
 
-    // access token 갱신
-    fun issueAccessToken(refreshToken: String){
+    // access token 재발급 로직
+    fun issueNewAccessToken(refreshToken: String) : String{
+        val result = refreshTokenRepository.findByRefreshToken(refreshToken)
+            ?: throw RuntimeException("유효하지 않은 토큰입니다!")
 
+        val memberId = result.memberId
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw RuntimeException("존재하지 않는 사용자입니다!")
+
+        val authenticationToken = UsernamePasswordAuthenticationToken(member.email, member.password)
+        val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
+
+        return jwtTokenProvider.createAccessToken(authentication)
     }
 }
