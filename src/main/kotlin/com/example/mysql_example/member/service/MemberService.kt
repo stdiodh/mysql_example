@@ -62,19 +62,33 @@ class MemberService(
         val authenticationToken = UsernamePasswordAuthenticationToken(loginDto.email, loginDto.password)
         val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
         val memberId = (authentication.principal as CustomUser).id
-        var token = refreshTokenRepository.findByIdOrNull(memberId)
-        if (token != null){
+        val result = refreshTokenRepository.findByMemberId(memberId)
+        if (result != null){
             throw RuntimeException("이미 로그인한 사용자입니다.")
         }
+
         val accessToken = jwtTokenProvider.createAccessToken(authentication)
         val refreshToken = jwtTokenProvider.createRefreshToken()
 
-        token = RefreshToken(
+        val data = RefreshToken(
             memberId = memberId,
             refreshToken = refreshToken
         )
-        refreshTokenRepository.save(token)
+
+        refreshTokenRepository.save(data)
         return Tokeninfo(grantType = "Bearer", accessToken = accessToken, refreshToken = refreshToken)
+    }
+
+    //로그아웃
+    fun logout(id : Long) : String {
+        val member =  memberRepository.findByIdOrNull(id)
+            ?: throw RuntimeException("존재하지 않는 사용자입니다!")
+
+        val refreshToken = refreshTokenRepository.findByMemberId(id)
+            ?: throw RuntimeException("로그인 하지 않은 사용자입니다!")
+
+        refreshTokenRepository.delete(refreshToken)
+        return "로그아웃 되었습니다!"
     }
 
     //내 정보 조회
@@ -85,11 +99,6 @@ class MemberService(
         return member.toResponse()
     }
 
-    //로그아웃
-    fun logout(id : Long) : String {
-        refreshTokenRepository.deleteById(id)
-        return "로그아웃 되었습니다!"
-    }
 
     // access token 갱신
     fun issueAccessToken(refreshToken: String){

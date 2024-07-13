@@ -6,7 +6,6 @@ import com.example.mysql_example.common.dto.Tokeninfo
 import com.example.mysql_example.member.dto.LoginDto
 import com.example.mysql_example.member.dto.MemberRequestDto
 import com.example.mysql_example.member.dto.MemberResponseDto
-import com.example.mysql_example.member.entity.RefreshToken
 import com.example.mysql_example.member.service.MemberService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -60,8 +59,8 @@ class MemberController (
     @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping("/logout")
     private fun logout() : ResponseEntity<BaseResponse<String>>{
-        val id = (SecurityContextHolder.getContext().authentication.principal as CustomUser).id
-        val result = memberService.logout(id)
+        val memberId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).id
+        val result = memberService.logout(memberId)
         return ResponseEntity.status(HttpStatus.OK).body(
             BaseResponse(
                 data = result

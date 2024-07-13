@@ -44,10 +44,12 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     protected fun defaultExceptionHandler(exception: Exception) :
-            ResponseEntity<BaseResponse<String>> {
-        val error = exception.message
+            ResponseEntity<BaseResponse<Map<String, String>>> {
+        val error = mutableMapOf("error" to (exception.message ?: "No error Message"))
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-            BaseResponse(status = ResultStatus.ERROR.name, data = error ,resultMsg = ResultStatus.ERROR.msg)
+            BaseResponse(status = ResultStatus.ERROR.name,
+                data = error,
+                resultMsg = ResultStatus.ERROR.msg)
         )
     }
 }

@@ -1,8 +1,6 @@
 package com.example.mysql_example.common.authority
 
 import com.example.mysql_example.common.dto.CustomUser
-import com.example.mysql_example.common.dto.Tokeninfo
-import com.example.mysql_example.member.entity.RefreshToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -12,14 +10,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
 
 const val EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 30L
 
-const val REFLESH_EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 60 * 24 * 365L
+const val REFLESH_EXPIRATION_MILLISECONDS : Long = 1000 * 60 * 60 * 24 * 30L
 
 
 @Component
@@ -58,12 +55,12 @@ class JwtTokenProvider {
     //refreshToken 분리
     fun createRefreshToken() : String {
         val now = Date()
-        //refresh 토큰 유효시간 (현재시간 + 1년)
-        val refreshExpration = Date(now.time + REFLESH_EXPIRATION_MILLISECONDS)
+        //refresh 토큰 유효시간 (현재시간 + 1달)
+        val refreshExpiration = Date(now.time + REFLESH_EXPIRATION_MILLISECONDS)
         return Jwts
             .builder()
             .issuedAt(now)
-            .expiration(refreshExpration)
+            .expiration(refreshExpiration)
             .signWith(key, Jwts.SIG.HS256)
             .compact()
     }
@@ -86,8 +83,8 @@ class JwtTokenProvider {
 
     fun validateToken(token: String) : Boolean {
         try {
-            val clams = getClaims(token)
-            return clams.expiration.after(Date())
+            val claims = getClaims(token)
+            return claims.expiration.after(Date())
         } catch (e : Exception) {
             println(e.message)
         }
