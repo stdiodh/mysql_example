@@ -35,6 +35,9 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 	//redis 의존성 추가
 	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.1")
+	//aws s3 이미지 의존성
+	implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
+
 
 
 	runtimeOnly("com.mysql:mysql-connector-j")

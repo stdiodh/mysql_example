@@ -35,6 +35,9 @@ class PostService (
         return result.toResponse()
     }
 
+    //사진과 함께 업로드하는
+//    fun pustWithImage :
+
     //게시물 생성
     fun putPost (postRequestDto: PostRequestDto, id : Long) : PostResponseDto {
         val post : Post = postRepository.findByIdOrNull(id)
@@ -46,6 +49,7 @@ class PostService (
             post = postRequestDto.post,
             userId = postRequestDto.userId,
             isPublic = postRequestDto.isPublic,
+            imageUrl = postRequestDto.imageUrl
         )
 
         val result = postRepository.save(newPost.toEntity())

@@ -25,6 +25,9 @@ class Post (
     @Column(nullable = false, length = 10)
     var isPublic : Boolean = true,
 
+    @Column(nullable = false, length = 1000)
+    var imageUrl : String?
+
 ){
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = [CascadeType.ALL])
     var comments : List<Comment>? = null
@@ -34,6 +37,7 @@ class Post (
         post = post,
         userId = userId,
         isPublic = isPublic,
-        comments = comments?.map { it.toResponse() }
+        comments = comments?.map { it.toResponse() },
+        imageUrl = imageUrl
     )
 }

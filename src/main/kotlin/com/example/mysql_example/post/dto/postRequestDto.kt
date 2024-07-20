@@ -14,6 +14,8 @@ data class PostRequestDto(
     @field:Min(value = 1, message = "유효하지 않은 사용자입니다.")
     var userId : Long,
     var isPublic : Boolean,
+
+    var imageUrl: String?
 ){
     fun toEntity() : Post = Post(
         id = id,
@@ -21,6 +23,7 @@ data class PostRequestDto(
         post = post,
         userId = userId,
         isPublic = isPublic,
+        imageUrl = imageUrl
     )
 }
 
@@ -31,4 +34,5 @@ data class PostResponseDto(
     var userId : Long,
     var isPublic: Boolean,
     var comments : List<CommentResponseDto>?,
+    var imageUrl : String?
 )
